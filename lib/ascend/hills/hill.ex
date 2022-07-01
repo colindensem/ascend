@@ -4,6 +4,19 @@ defmodule Ascend.Hills.Hill do
 
   @primary_key {:id, :binary_id, autogenerate: true}
   @foreign_key_type :binary_id
+
+  @optional_fields [
+    :id,
+    :classification,
+    :area,
+    :grid_ref,
+    :area,
+    :inserted_at,
+    :updated_at,
+    :munro,
+    :wainwright
+  ]
+
   schema "hills" do
     field :area, :string
     field :classification, :string
@@ -20,10 +33,15 @@ defmodule Ascend.Hills.Hill do
     timestamps()
   end
 
+  def all_fields do
+    __MODULE__.__schema__(:fields)
+  end
+
   @doc false
   def changeset(hill, attrs) do
     hill
-    |> cast(attrs, [:name, :dobih_id, :metres, :feet, :grid_ref, :classification, :region, :area, :munro, :wainwright, :wainwright_outlying_fell])
-    |> validate_required([:name, :dobih_id, :metres, :feet, :grid_ref, :classification, :region, :area, :munro, :wainwright, :wainwright_outlying_fell])
+    |> cast(attrs, all_fields())
+    |> validate_required(all_fields() -- @optional_fields)
+    |> unique_constraint(:dobih_id)
   end
 end

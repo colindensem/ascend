@@ -5,7 +5,6 @@ defmodule Ascend.Hills do
 
   import Ecto.Query, warn: false
   alias Ascend.Repo
-
   alias Ascend.Hills.Hill
 
   @doc """
@@ -100,5 +99,36 @@ defmodule Ascend.Hills do
   """
   def change_hill(%Hill{} = hill, attrs \\ %{}) do
     Hill.changeset(hill, attrs)
+  end
+
+  def mappings do
+    %{
+      "Ma" => "Marylin",
+      "Hu" => "Hump",
+      "Sim" => "Simm",
+      "5" => "Dodd",
+      "M" => "Munro",
+      "MT" => "Munro Top",
+      "F" => "Furth",
+      "C" => "Corbett",
+      "G" => "Graham",
+      "D" => "Donald",
+      "DT" => "Donald Top",
+      "Hew" => "Hewitt",
+      "N" => "Nuttall",
+      "Dew" => "Dewey",
+      "DDew" => "Donald Dewey",
+      "HF" => "Highland Five",
+      "W" => "Wainwright",
+      "WO" => "Wainwright Outlying Fell",
+      "B" => "Birkett",
+      "Sy" => "Synge",
+      "Fel" => "Fellranger",
+      "Dil" => "Dillon",
+      "A" => "Arderin",
+      "VL" => "Vandeleur-Lynam",
+      "O" => "Other list",
+      "Un" => "unclassified"
+    }
   end
 end
