@@ -1,0 +1,32 @@
+<h1>Listing Hills</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Dobih</th>
+      <th>Metres</th>
+      <th>Feet</th>
+      <th>Grid ref</th>
+      <th>Classification</th>
+      <th>Region</th>
+      <th>Area</th>
+    </tr>
+  </thead>
+  <tbody id="hills">
+    <%= for hill <- @hills do %>
+      <tr id={"hill-#{hill.id}"}>
+        <td>
+          <%= live_redirect "#{hill.name}", to: Routes.hill_show_path(@socket, :show, hill) %>
+        </td>
+        <td><%= hill.dobih_id %></td>
+        <td><%= hill.metres %></td>
+        <td><%= hill.feet %></td>
+        <td><%= hill.grid_ref %></td>
+        <td><%= hill.classification %></td>
+        <td><%= hill.region %></td>
+        <td><%= hill.area %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

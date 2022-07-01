@@ -1,0 +1,62 @@
+<h1>Show Hill</h1>
+
+<ul>
+
+  <li>
+    <strong>Name:</strong>
+    <%= @hill.name %>
+  </li>
+
+  <li>
+    <strong>Dobih:</strong>
+    <%= @hill.dobih_id %>
+  </li>
+
+  <li>
+    <strong>Metres:</strong>
+    <%= @hill.metres %>
+  </li>
+
+  <li>
+    <strong>Feet:</strong>
+    <%= @hill.feet %>
+  </li>
+
+  <li>
+    <strong>Grid ref:</strong>
+    <%= @hill.grid_ref %>
+  </li>
+
+  <li>
+    <strong>Classification:</strong>
+    <%= @hill.classification %>
+  </li>
+
+  <li>
+    <strong>Region:</strong>
+    <%= @hill.region %>
+  </li>
+
+  <li>
+    <strong>Area:</strong>
+    <%= @hill.area %>
+  </li>
+
+  <li>
+    <strong>Munro:</strong>
+    <%= @hill.munro %>
+  </li>
+
+  <li>
+    <strong>Wainwright:</strong>
+    <%= @hill.wainwright %>
+  </li>
+
+  <li>
+    <strong>Wainwright outlying fell:</strong>
+    <%= @hill.wainwright_outlying_fell %>
+  </li>
+
+</ul>
+
+<span><%= live_redirect "Back", to: Routes.hill_index_path(@socket, :index) %></span>
