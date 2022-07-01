@@ -2,10 +2,10 @@ defmodule AscendWeb.HillLiveTest do
   use AscendWeb.ConnCase
 
   import Phoenix.LiveViewTest
-  import Ascend.HillsFixtures
+  import Ascend.Factory
 
   defp create_hill(_) do
-    hill = hill_fixture()
+    hill = insert(:hill)
     %{hill: hill}
   end
 

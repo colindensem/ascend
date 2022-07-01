@@ -16,8 +16,20 @@ defmodule Ascend.Hills do
       [%Hill{}, ...]
 
   """
-  def list_hills do
-    Repo.all(Hill)
+  def list_hills(opts) do
+    from(h in Hill)
+    |> sort(opts)
+    |> Repo.all()
+  end
+
+  defp sort(query, %{sort_by: sort_by, sort_dir: sort_dir})
+       when sort_by in [:dobih_id, :name, :metres, :feet] and
+              sort_dir in [:asc, :desc] do
+    order_by(query, {^sort_dir, ^sort_by})
+  end
+
+  defp sort(query, %{}) do
+    order_by(query, {:asc, :metres})
   end
 
   @doc """

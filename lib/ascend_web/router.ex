@@ -17,9 +17,7 @@ defmodule AscendWeb.Router do
   scope "/", AscendWeb do
     pipe_through :browser
 
-    # get "/", PageController, :index
     live "/", HillLive.Index, :index
-    live "/hills", HillLive.Index, :index
 
     live "/hills/:id", HillLive.Show, :show
   end

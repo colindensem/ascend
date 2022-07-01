@@ -3,10 +3,25 @@
 <table>
   <thead>
     <tr>
-      <th>Name</th>
+      <th><.live_component
+      module={AscendWeb.Live.SortingComponent}
+      id={"sorting-name"}
+      key={:name}
+      sorting={@sorting} />
+      </th>
       <th>Dobih</th>
-      <th>Metres</th>
-      <th>Feet</th>
+      <th><.live_component
+        module={AscendWeb.Live.SortingComponent}
+        id={"sorting-metres"}
+        key={:metres}
+        sorting={@sorting} />
+      </th>
+      <th><.live_component
+        module={AscendWeb.Live.SortingComponent}
+        id={"sorting-feet"}
+        key={:feet}
+        sorting={@sorting} />
+      </th>
       <th>Grid ref</th>
       <th>Classification</th>
       <th>Region</th>

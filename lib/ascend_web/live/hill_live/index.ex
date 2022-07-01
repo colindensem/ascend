@@ -2,37 +2,45 @@ defmodule AscendWeb.HillLive.Index do
   use AscendWeb, :live_view
 
   alias Ascend.Hills
-  alias Ascend.Hills.Hill
+  alias AscendWeb.Forms.SortingForm
 
   @impl true
-  def mount(_params, _session, socket) do
-    {:ok, assign(socket, :hills, list_hills())}
-  end
+  def mount(_params, _session, socket), do: {:ok, socket}
 
   @impl true
   def handle_params(params, _url, socket) do
-    {:noreply, apply_action(socket, socket.assigns.live_action, params)}
+    socket =
+      socket
+      |> assign(:page_title, "Listing Hills")
+      |> parse_params(params)
+      |> assign_hills()
+
+    {:noreply, socket}
   end
 
-  defp apply_action(socket, :edit, %{"id" => id}) do
-    socket
-    |> assign(:page_title, "Edit Hill")
-    |> assign(:hill, Hills.get_hill!(id))
+  @impl true
+  def handle_info({:update, opts}, socket) do
+    path = Routes.hill_index_path(socket, :index, opts)
+    {:noreply, push_patch(socket, to: path, replace: true)}
   end
 
-  defp apply_action(socket, :new, _params) do
-    socket
-    |> assign(:page_title, "New Hill")
-    |> assign(:hill, %Hill{})
+  defp parse_params(socket, params) do
+    with {:ok, sorting_opts} <- SortingForm.parse(params) do
+      assign_sorting(socket, sorting_opts)
+    else
+      _error ->
+        assign_sorting(socket)
+    end
   end
 
-  defp apply_action(socket, :index, _params) do
-    socket
-    |> assign(:page_title, "Listing Hills")
-    |> assign(:hill, nil)
+  defp assign_sorting(socket, overrides \\ %{}) do
+    opts = Map.merge(SortingForm.default_values(), overrides)
+    assign(socket, :sorting, opts)
   end
 
-  defp list_hills do
-    Hills.list_hills()
+  defp assign_hills(socket) do
+    %{sorting: sorting} = socket.assigns
+
+    assign(socket, :hills, Hills.list_hills(sorting))
   end
 end

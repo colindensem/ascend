@@ -6,7 +6,7 @@ defmodule Ascend.HillsTest do
   describe "hills" do
     alias Ascend.Hills.Hill
 
-    import Ascend.HillsFixtures
+    import Ascend.Factory
 
     @invalid_attrs %{
       area: nil,
@@ -22,13 +22,22 @@ defmodule Ascend.HillsTest do
       wainwright_outlying_fell: nil
     }
 
-    test "list_hills/0 returns all hills" do
-      hill = hill_fixture()
-      assert Hills.list_hills() == [hill]
+    test "list_hills/1 returns all hills" do
+      hill1 = insert(:hill, metres: 1000, feet: 3280.84)
+      hill2 = insert(:hill, metres: 500, feet: 1640.42)
+      assert Hills.list_hills(%{}) == [hill2, hill1]
+    end
+
+    test "list hills/1 with name sort" do
+      hill1 = insert(:hill, name: "Z Hill")
+      hill2 = insert(:hill, name: "A Hill")
+
+      sort = %{sort_by: :name, sort_dir: :asc}
+      assert Hills.list_hills(sort) == [hill2, hill1]
     end
 
     test "get_hill!/1 returns the hill with given id" do
-      hill = hill_fixture()
+      hill = insert(:hill)
       assert Hills.get_hill!(hill.id) == hill
     end
 
@@ -66,7 +75,7 @@ defmodule Ascend.HillsTest do
     end
 
     test "update_hill/2 with valid data updates the hill" do
-      hill = hill_fixture()
+      hill = insert(:hill)
 
       update_attrs = %{
         area: "some updated area",
@@ -97,19 +106,19 @@ defmodule Ascend.HillsTest do
     end
 
     test "update_hill/2 with invalid data returns error changeset" do
-      hill = hill_fixture()
+      hill = insert(:hill)
       assert {:error, %Ecto.Changeset{}} = Hills.update_hill(hill, @invalid_attrs)
       assert hill == Hills.get_hill!(hill.id)
     end
 
     test "delete_hill/1 deletes the hill" do
-      hill = hill_fixture()
+      hill = insert(:hill)
       assert {:ok, %Hill{}} = Hills.delete_hill(hill)
       assert_raise Ecto.NoResultsError, fn -> Hills.get_hill!(hill.id) end
     end
 
     test "change_hill/1 returns a hill changeset" do
-      hill = hill_fixture()
+      hill = insert(:hill)
       assert %Ecto.Changeset{} = Hills.change_hill(hill)
     end
   end
