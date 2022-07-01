@@ -36,6 +36,14 @@ defmodule Ascend.HillsTest do
       assert Hills.list_hills(sort) == [hill2, hill1]
     end
 
+    test "list hills/1 with name filter" do
+      hill1 = insert(:hill, name: "Z Hill")
+      hill2 = insert(:hill, name: "A Hill")
+
+      sort = %{name: "a"}
+      assert Hills.list_hills(sort) == [hill2]
+    end
+
     test "get_hill!/1 returns the hill with given id" do
       hill = insert(:hill)
       assert Hills.get_hill!(hill.id) == hill

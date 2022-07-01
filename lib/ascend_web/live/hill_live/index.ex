@@ -3,6 +3,7 @@ defmodule AscendWeb.HillLive.Index do
 
   alias Ascend.Hills
   alias AscendWeb.Forms.SortingForm
+  alias AscendWeb.Forms.FilterForm
 
   @impl true
   def mount(_params, _session, socket), do: {:ok, socket}
@@ -25,12 +26,25 @@ defmodule AscendWeb.HillLive.Index do
   end
 
   defp parse_params(socket, params) do
-    with {:ok, sorting_opts} <- SortingForm.parse(params) do
-      assign_sorting(socket, sorting_opts)
+    with {:ok, sorting_opts} <- SortingForm.parse(params),
+         {:ok, filter_opts} <- FilterForm.parse(params) do
+      IO.puts("PARSEING OK")
+      IO.inspect(params)
+      IO.inspect(filter_opts)
+
+      socket
+      |> assign_filter(filter_opts)
+      |> assign_sorting(sorting_opts)
     else
       _error ->
-        assign_sorting(socket)
+        socket
+        |> assign_filter()
+        |> assign_sorting()
     end
+  end
+
+  defp assign_filter(socket, overrides \\ %{}) do
+    assign(socket, :filter, FilterForm.default_values(overrides))
   end
 
   defp assign_sorting(socket, overrides \\ %{}) do
