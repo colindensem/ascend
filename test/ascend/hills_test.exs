@@ -8,7 +8,19 @@ defmodule Ascend.HillsTest do
 
     import Ascend.HillsFixtures
 
-    @invalid_attrs %{area: nil, classification: nil, dobih_id: nil, feet: nil, grid_ref: nil, metres: nil, munro: nil, name: nil, region: nil, wainwright: nil, wainwright_outlying_fell: nil}
+    @invalid_attrs %{
+      area: nil,
+      classification: nil,
+      dobih_id: nil,
+      feet: nil,
+      grid_ref: nil,
+      metres: nil,
+      munro: nil,
+      name: nil,
+      region: nil,
+      wainwright: nil,
+      wainwright_outlying_fell: nil
+    }
 
     test "list_hills/0 returns all hills" do
       hill = hill_fixture()
@@ -21,7 +33,19 @@ defmodule Ascend.HillsTest do
     end
 
     test "create_hill/1 with valid data creates a hill" do
-      valid_attrs = %{area: "some area", classification: "some classification", dobih_id: 42, feet: 120.5, grid_ref: "some grid_ref", metres: 120.5, munro: true, name: "some name", region: "some region", wainwright: true, wainwright_outlying_fell: true}
+      valid_attrs = %{
+        area: "some area",
+        classification: "some classification",
+        dobih_id: 42,
+        feet: 120.5,
+        grid_ref: "some grid_ref",
+        metres: 120.5,
+        munro: true,
+        name: "some name",
+        region: "some region",
+        wainwright: true,
+        wainwright_outlying_fell: true
+      }
 
       assert {:ok, %Hill{} = hill} = Hills.create_hill(valid_attrs)
       assert hill.area == "some area"
@@ -43,7 +67,20 @@ defmodule Ascend.HillsTest do
 
     test "update_hill/2 with valid data updates the hill" do
       hill = hill_fixture()
-      update_attrs = %{area: "some updated area", classification: "some updated classification", dobih_id: 43, feet: 456.7, grid_ref: "some updated grid_ref", metres: 456.7, munro: false, name: "some updated name", region: "some updated region", wainwright: false, wainwright_outlying_fell: false}
+
+      update_attrs = %{
+        area: "some updated area",
+        classification: "some updated classification",
+        dobih_id: 43,
+        feet: 456.7,
+        grid_ref: "some updated grid_ref",
+        metres: 456.7,
+        munro: false,
+        name: "some updated name",
+        region: "some updated region",
+        wainwright: false,
+        wainwright_outlying_fell: false
+      }
 
       assert {:ok, %Hill{} = hill} = Hills.update_hill(hill, update_attrs)
       assert hill.area == "some updated area"

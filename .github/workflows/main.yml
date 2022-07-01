@@ -1,0 +1,83 @@
+name: "Ascend CI"
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  test:
+    name: Run Tests ${{ matrix.name }} - Experimental ${{ matrix.experimental }}
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        elixir: [1.13.4]
+        otp: [25.0.1]
+        experimental: [false]
+        name: ["stable"]
+        # include:
+        #   - elixir: 1.13.3
+        #     otp: 24.0.6
+        #     experimental: true
+        #     name: "latest"
+    continue-on-error: ${{ matrix.experimental }}
+
+
+    steps:
+      - name: "Checkout Repository"
+        uses: actions/checkout@v2
+
+      - name: "Setup Elixir"
+        uses: erlef/setup-elixir@v1
+        with:
+          otp-version: ${{matrix.otp}}
+          elixir-version: ${{matrix.elixir}}
+
+      - name: Setup Node
+        uses: actions/setup-node@v1
+        with:
+          node-version: 14.15.4
+
+      - name: Cache global mix
+        uses: actions/cache@v1
+        with:
+          path: ~/.mix
+          key: cache-${{ runner.os }}-mix-${{ matrix.otp }}-${{ matrix.elixir }}
+          restore-keys: cache-${{ runner.os }}-mix-
+
+      - name: Cache dependencies
+        uses: actions/cache@v1
+        with:
+          path: deps
+          key: cache-${{ runner.os }}-deps-${{ matrix.otp }}-${{ matrix.elixir }}-${{ hashFiles(format('{0}{1}', github.workspace, '/mix.lock')) }}
+          restore-keys: cache-${{ runner.os }}-deps-
+
+      - uses: actions/cache@v1
+        id: build-cache
+        with:
+          path: _build
+          key: ${{ runner.os }}-build-${{ matrix.otp }}-${{ matrix.elixir }}-${{ hashFiles(format('{0}{1}', github.workspace, '/mix.lock')) }}
+
+
+      - name: Install dependencies
+        run: |-
+          mix deps.get
+          mix deps.compile
+      - name: Formatting checks
+        run: mix format --check-formatted
+
+      - name: Run Tests
+        run: mix test
+
+  deploy:
+    env:
+      FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+    needs: test
+    name: Deploy app
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: superfly/flyctl-actions/setup-flyctl@master
+      - run: flyctl deploy --remote-only
