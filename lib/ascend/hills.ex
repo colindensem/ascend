@@ -24,9 +24,6 @@ defmodule Ascend.Hills do
   end
 
   defp filter(query, opts) do
-    IO.puts("!!!!!!!")
-    IO.inspect(opts)
-
     query
     |> filter_by_name(opts)
   end

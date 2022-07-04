@@ -21,17 +21,25 @@ defmodule AscendWeb.HillLive.Index do
 
   @impl true
   def handle_info({:update, opts}, socket) do
-    path = Routes.hill_index_path(socket, :index, opts)
+    params = merge_and_sanitize_params(socket, opts)
+    path = Routes.hill_index_path(socket, :index, params)
     {:noreply, push_patch(socket, to: path, replace: true)}
+  end
+
+  defp merge_and_sanitize_params(socket, overrides \\ %{}) do
+    %{sorting: sorting, filter: filter} = socket.assigns
+
+    %{}
+    |> Map.merge(sorting)
+    |> Map.merge(filter)
+    |> Map.merge(overrides)
+    |> Enum.reject(fn {_key, value} -> is_nil(value) end)
+    |> Map.new()
   end
 
   defp parse_params(socket, params) do
     with {:ok, sorting_opts} <- SortingForm.parse(params),
          {:ok, filter_opts} <- FilterForm.parse(params) do
-      IO.puts("PARSEING OK")
-      IO.inspect(params)
-      IO.inspect(filter_opts)
-
       socket
       |> assign_filter(filter_opts)
       |> assign_sorting(sorting_opts)
@@ -53,8 +61,7 @@ defmodule AscendWeb.HillLive.Index do
   end
 
   defp assign_hills(socket) do
-    %{sorting: sorting} = socket.assigns
-
-    assign(socket, :hills, Hills.list_hills(sorting))
+    params = merge_and_sanitize_params(socket)
+    assign(socket, :hills, Hills.list_hills(params))
   end
 end

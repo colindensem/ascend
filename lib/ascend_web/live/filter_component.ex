@@ -27,6 +27,7 @@ defmodule AscendWeb.Live.FilterComponent do
   def handle_event("search", %{"filter" => filter}, socket) do
     case FilterForm.parse(filter) do
       {:ok, opts} ->
+        IO.puts("Send self 1")
         send(self(), {:update, opts})
         {:noreply, socket}
 
@@ -34,10 +35,4 @@ defmodule AscendWeb.Live.FilterComponent do
         {:noreply, assign(socket, :changeset, changeset)}
     end
   end
-
-  def chevron(%{sort_by: sort_by, sort_dir: sort_dir}, key) when sort_by == key do
-    if sort_dir == :asc, do: "▼", else: "▲"
-  end
-
-  def chevron(_opts, _key), do: ""
 end

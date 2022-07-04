@@ -17,7 +17,6 @@ defmodule AscendWeb.Forms.FilterForm do
     {@default_values, @fields}
     |> cast(params, Map.keys(@fields))
     |> apply_action(:insert)
-    |> IO.inspect()
   end
 
   def change_values(values \\ @default_values) do
