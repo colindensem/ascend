@@ -18,9 +18,23 @@ defmodule Ascend.Hills do
   """
   def list_hills(opts) do
     from(h in Hill)
+    |> filter(opts)
     |> sort(opts)
     |> Repo.all()
   end
+
+  defp filter(query, opts) do
+    query
+    |> filter_by_name(opts)
+  end
+
+  defp filter_by_name(query, %{name: name})
+       when is_binary(name) and name != "" do
+    query_string = "%#{name}%"
+    where(query, [h], like(h.name, ^query_string))
+  end
+
+  defp filter_by_name(query, _opts), do: query
 
   defp sort(query, %{sort_by: sort_by, sort_dir: sort_dir})
        when sort_by in [:dobih_id, :name, :metres, :feet] and
