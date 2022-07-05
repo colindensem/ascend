@@ -7,6 +7,8 @@ defmodule Ascend.Application do
 
   @impl true
   def start(_type, _args) do
+    Appsignal.Phoenix.LiveView.attach()
+
     # Run migrations
     Ascend.Release.migrate()
 

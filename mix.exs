@@ -33,6 +33,7 @@ defmodule Ascend.MixProject do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
+      {:appsignal_phoenix, "~> 2.1"},
       {:ecto_sql, "~> 3.6"},
       {:ecto_sqlite3, ">= 0.0.0"},
       {:esbuild, "~> 0.4", runtime: Mix.env() == :dev},

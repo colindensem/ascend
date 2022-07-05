@@ -48,6 +48,14 @@ config :logger, :console,
 # Use Jason for JSON parsing in Phoenix
 config :phoenix, :json_library, Jason
 
+# Appsignal is a realtime error tracking and monitoring service.
+config :appsignal, :config,
+  otp_app: System.get_env("APPSIGNAL_OTP_APP", "ascend") |> String.to_atom(),
+  name: System.get_env("APPSIGNAL_APP_NAME", "Ascend"),
+  push_api_key: System.get_env("APPSIGNAL_PUSH_API_KEY", nil),
+  env: Mix.env(),
+  active: true
+
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{config_env()}.exs"
