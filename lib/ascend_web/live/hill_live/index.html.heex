@@ -1,4 +1,4 @@
-<h1>Listing Hills</h1>
+<h1>Listing <%= @pagination[:total_count] %> Hills</h1>
 
 <div>
   <.live_component
@@ -6,7 +6,6 @@
     id="filter"
     filter={@filter}
   />
-</div>
 <table>
   <thead>
     <tr>
@@ -52,3 +51,10 @@
     <% end %>
   </tbody>
 </table>
+
+<.live_component
+  module={AscendWeb.Live.PaginationComponent}
+  id="pagination"
+  pagination={@pagination}/>
+
+</div>

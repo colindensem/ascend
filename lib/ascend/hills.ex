@@ -23,6 +23,40 @@ defmodule Ascend.Hills do
     |> Repo.all()
   end
 
+  @doc """
+  Returns the list of hills with a total count
+
+  ## Examples
+
+      iex> list_hills_with_total_count(%{})
+      %{hills: [%Hill{}, ...], total_count: 2}
+
+  """
+  def list_hills_with_total_count(opts) do
+    query = from(h in Hill) |> filter(opts)
+
+    total_count = Repo.aggregate(query, :count)
+
+    result =
+      query
+      |> sort(opts)
+      |> paginate(opts)
+      |> Repo.all()
+
+    %{hills: result, total_count: total_count}
+  end
+
+  defp paginate(query, %{page: page, page_size: page_size})
+       when is_integer(page) and is_integer(page_size) do
+    offset = max(page - 1, 0) * page_size
+
+    query
+    |> limit(^page_size)
+    |> offset(^offset)
+  end
+
+  defp paginate(query, _opts), do: query
+
   defp filter(query, opts) do
     query
     |> filter_by_name(opts)
