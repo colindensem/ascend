@@ -57,7 +57,7 @@ defmodule Ascend.HillsTest do
     end
 
     test "list_hills_with_total_count/1 returns paginated hills" do
-      hill1 = insert(:hill, name: "Z Hill")
+      insert(:hill, name: "Z Hill")
       hill2 = insert(:hill, name: "A Hill1")
       hill3 = insert(:hill, name: "A Hill2")
       hill4 = insert(:hill, name: "A Hill3")
