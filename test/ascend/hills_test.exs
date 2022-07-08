@@ -73,6 +73,29 @@ defmodule Ascend.HillsTest do
              }
     end
 
+    test "hill_count/1 returns a count" do
+      insert(:hill)
+      assert Hills.hill_count(%{}) == 1
+    end
+
+    test "hill_count/1 returns a filtered count" do
+      insert(:hill, name: "Z Hill")
+      insert(:hill, name: "A Hill1")
+      insert(:hill, name: "A Hill2")
+      insert(:hill, name: "A Hill3")
+
+      assert Hills.hill_count(%{name: "a"}) == 3
+    end
+
+    test "list_hills_with_pagination/3" do
+      hill1 = insert(:hill, name: "A Hill1")
+      hill2 = insert(:hill, name: "A Hill2")
+      hill3 = insert(:hill, name: "A Hill3")
+
+      assert Hills.list_hills_with_pagination(0, 1, %{}) == [hill1]
+      assert Hills.list_hills_with_pagination(1, 2, %{}) == [hill2, hill3]
+    end
+
     test "get_hill!/1 returns the hill with given id" do
       hill = insert(:hill)
       assert Hills.get_hill!(hill.id) == hill

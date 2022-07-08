@@ -18,6 +18,7 @@ defmodule AscendWeb.Router do
     pipe_through :browser
 
     live "/", HillLive.Index, :index
+    live "/infinity", InfinityLive
 
     live "/hills/:id", HillLive.Show, :show
   end

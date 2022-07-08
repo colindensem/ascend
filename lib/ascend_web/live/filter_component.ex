@@ -27,7 +27,6 @@ defmodule AscendWeb.Live.FilterComponent do
   def handle_event("search", %{"filter" => filter}, socket) do
     case FilterForm.parse(filter) do
       {:ok, opts} ->
-        IO.puts("Send self 1")
         send(self(), {:update, opts})
         {:noreply, socket}
 

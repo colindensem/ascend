@@ -16,11 +16,26 @@ defmodule Ascend.Hills do
       [%Hill{}, ...]
 
   """
-  def list_hills(opts) do
+  def list_hills(opts \\ %{}) do
     from(h in Hill)
     |> filter(opts)
     |> sort(opts)
     |> Repo.all()
+  end
+
+  @doc """
+  Returns a count of hills.
+
+  ## Examples
+
+      iex> hill_count()
+      10
+
+  """
+  def hill_count(opts \\ %{}) do
+    from(h in Hill)
+    |> filter(opts)
+    |> Repo.aggregate(:count)
   end
 
   @doc """
@@ -32,7 +47,7 @@ defmodule Ascend.Hills do
       %{hills: [%Hill{}, ...], total_count: 2}
 
   """
-  def list_hills_with_total_count(opts) do
+  def list_hills_with_total_count(opts \\ %{}) do
     query = from(h in Hill) |> filter(opts)
 
     total_count = Repo.aggregate(query, :count)
@@ -44,6 +59,14 @@ defmodule Ascend.Hills do
       |> Repo.all()
 
     %{hills: result, total_count: total_count}
+  end
+
+  def list_hills_with_pagination(offset, limit, opts \\ %{}) do
+    from(h in Hill)
+    |> filter(opts)
+    |> limit(^limit)
+    |> offset(^offset)
+    |> Repo.all()
   end
 
   defp paginate(query, %{page: page, page_size: page_size})
