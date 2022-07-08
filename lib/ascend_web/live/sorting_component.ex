@@ -4,7 +4,7 @@ defmodule AscendWeb.Live.SortingComponent do
   def render(assigns) do
     ~H"""
     <div phx-click="sort" phx-target={@myself}>
-      <%= @key %> <%= chevron(@sorting, @key) %>
+      <%= @display_name %> <%= chevron(@sorting, @key) %>
     </div>
     """
   end

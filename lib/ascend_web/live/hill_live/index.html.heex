@@ -13,19 +13,21 @@
       module={AscendWeb.Live.SortingComponent}
       id={"sorting-name"}
       key={:name}
+      display_name="Name"
       sorting={@sorting} />
       </th>
-      <th>Dobih</th>
       <th><.live_component
         module={AscendWeb.Live.SortingComponent}
         id={"sorting-metres"}
         key={:metres}
+        display_name="Metres"
         sorting={@sorting} />
       </th>
       <th><.live_component
         module={AscendWeb.Live.SortingComponent}
         id={"sorting-feet"}
         key={:feet}
+        display_name="Feet"
         sorting={@sorting} />
       </th>
       <th>Grid ref</th>
@@ -40,7 +42,6 @@
         <td>
           <%= live_redirect "#{hill.name}", to: Routes.hill_show_path(@socket, :show, hill) %>
         </td>
-        <td><%= hill.dobih_id %></td>
         <td><%= hill.metres %></td>
         <td><%= hill.feet %></td>
         <td><%= hill.grid_ref %></td>

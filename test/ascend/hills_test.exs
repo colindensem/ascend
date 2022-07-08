@@ -23,8 +23,8 @@ defmodule Ascend.HillsTest do
     }
 
     test "list_hills/1 returns all hills" do
-      hill1 = insert(:hill, metres: 1000, feet: 3280.84)
-      hill2 = insert(:hill, metres: 500, feet: 1640.42)
+      hill1 = insert(:hill, metres: 500, feet: 1640.42)
+      hill2 = insert(:hill, metres: 1000, feet: 3280.84)
       assert Hills.list_hills(%{}) == [hill2, hill1]
     end
 
@@ -47,8 +47,8 @@ defmodule Ascend.HillsTest do
     end
 
     test "list_hills_with_total_count/1 returns all hills" do
-      hill1 = insert(:hill, metres: 1000, feet: 3280.84)
-      hill2 = insert(:hill, metres: 500, feet: 1640.42)
+      hill1 = insert(:hill, metres: 500, feet: 1640.42)
+      hill2 = insert(:hill, metres: 1000, feet: 3280.84)
 
       assert Hills.list_hills_with_total_count(%{}) == %{
                hills: [hill2, hill1],
@@ -94,6 +94,17 @@ defmodule Ascend.HillsTest do
 
       assert Hills.list_hills_with_pagination(0, 1, %{}) == [hill1]
       assert Hills.list_hills_with_pagination(1, 2, %{}) == [hill2, hill3]
+    end
+
+    test "list_hills_with_pagination/3 with name sort" do
+      insert(:hill, name: "Z Hill")
+      hill2 = insert(:hill, name: "AB Hill")
+      hill3 = insert(:hill, name: "AA Hill")
+
+      params = %{name: "a", sort_by: :name, sort_dir: :asc}
+      assert Hills.list_hills_with_pagination(0, 2, params) == [hill3, hill2]
+      assert Hills.list_hills_with_pagination(0, 1, params) == [hill3]
+      assert Hills.list_hills_with_pagination(1, 1, params) == [hill2]
     end
 
     test "get_hill!/1 returns the hill with given id" do

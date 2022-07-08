@@ -64,6 +64,7 @@ defmodule Ascend.Hills do
   def list_hills_with_pagination(offset, limit, opts \\ %{}) do
     from(h in Hill)
     |> filter(opts)
+    |> sort(opts)
     |> limit(^limit)
     |> offset(^offset)
     |> Repo.all()
@@ -100,7 +101,7 @@ defmodule Ascend.Hills do
   end
 
   defp sort(query, %{}) do
-    order_by(query, {:asc, :metres})
+    order_by(query, {:desc, :metres})
   end
 
   @doc """
